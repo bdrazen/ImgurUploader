@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="*" Name="Imgur Uploader" Language="1033" Version="1.0.0.0" Manufacturer="Drazen Bjelovuk" UpgradeCode="c64c1962-a191-4fd3-98ba-69454587466e">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate />
+
+		<Feature Id="ProductFeature" Title="Imgur Uploader" Level="1">
+			<ComponentRef Id="ProductComponent"/>
+			<ComponentRef Id="ShortcutComponent"/>
+			<ComponentRef Id="RegistryEntries"/>
+		</Feature>
+		
+		<Icon Id="icon.ico" SourceFile="$(var.ImgurUploader.ProjectDir)\Resources\icon.ico" />
+		
+		<UI>
+			<UIRef Id="WixUI_InstallDir" />
+			<Publish Dialog="WelcomeDlg"    Control="Next" Event="NewDialog" Value="InstallDirDlg" Order="2">1</Publish>
+			<Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg"    Order="2">1</Publish>
+		</UI>
+		
+		<Property Id="WIXUI_INSTALLDIR" Value="InstallFolder" />
+		<Property Id="ARPPRODUCTICON" Value="icon.ico" />
+	</Product>
+
+	<Fragment>
+		<Component Id="ProductComponent" Directory="InstallFolder" Guid="{BEF343AB-B99A-4CCE-B3D8-2E79CD68400B}">
+			<File Id="ProductComponent" Source="$(var.ImgurUploader.TargetPath)" KeyPath="yes" />
+			<File Id="ConfigComponent" Source="$(var.ImgurUploader.TargetDir)\$(var.ImgurUploader.TargetFileName).config" />
+			<File Id="JSONComponent" Source="$(var.ImgurUploader.TargetDir)\Newtonsoft.Json.dll" />
+		</Component>
+		<Component Id="ShortcutComponent" Directory="MenuFolder" Guid="{CFDCFD2B-BD49-451A-AF89-E2C97CB3CE3B}">
+			<Shortcut			  Id="StartMenuShortcut"
+										Name="Imgur Uploader"
+						 Description="Upload files to Imgur"
+									Target="[#ProductComponent]"
+				WorkingDirectory="InstallFolder"
+										Icon="icon.ico" />
+			<RemoveFolder Id="RemoveMenuFolder" On="uninstall" />
+			<RegistryValue Root="HKMU" Key="Software\Microsoft\Imgur Uploader" Name="installed" Type="integer" Value="1" KeyPath="yes"/>
+		</Component>
+		<Component Id="RegistryEntries" Directory="TARGETDIR" Guid="{132EEAA4-D7F2-46E5-B3EE-2EB0E4739018}">
+			<RegistryKey Root="HKMU"
+									 Key="Software\Classes\SystemFileAssociations">
+				<RegistryValue Key=".jpg\shell\Upload to Imgur" Name="Icon" Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName)" />
+				<RegistryValue Key=".jpg\shell\Upload to Imgur\command"     Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName) %1" />
+				<RegistryValue Key=".jpeg\shell\Upload to Imgur" Name="Icon" Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName)" />
+				<RegistryValue Key=".jpeg\shell\Upload to Imgur\command"     Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName) %1" />
+				<RegistryValue Key=".png\shell\Upload to Imgur" Name="Icon" Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName)" />
+				<RegistryValue Key=".png\shell\Upload to Imgur\command"     Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName) %1" />
+				<RegistryValue Key=".bmp\shell\Upload to Imgur" Name="Icon" Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName)" />
+				<RegistryValue Key=".bmp\shell\Upload to Imgur\command"     Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName) %1" />
+				<RegistryValue Key=".gif\shell\Upload to Imgur" Name="Icon" Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName)" />
+				<RegistryValue Key=".gif\shell\Upload to Imgur\command"     Type="string" Value="[InstallFolder]$(var.ImgurUploader.TargetFileName) %1" />
+			</RegistryKey>
+		</Component>
+	</Fragment>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+				<Directory Id="InstallFolder" Name="Imgur Uploader" />
+			</Directory>
+			<Directory Id="ProgramMenuFolder">
+				<Directory Id="MenuFolder" Name="Imgur Uploader"/>
+			</Directory>
+		</Directory>
+	</Fragment>
+</Wix>

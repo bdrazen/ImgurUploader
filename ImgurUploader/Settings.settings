@@ -1,0 +1,33 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ImgurUploader" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UploadURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.imgur.com/3/image</Value>
+    </Setting>
+    <Setting Name="AuthURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.imgur.com/oauth2/authorize</Value>
+    </Setting>
+    <Setting Name="TokenURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.imgur.com/oauth2/token</Value>
+    </Setting>
+    <Setting Name="ClientID" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">575caac0197cfa9</Value>
+    </Setting>
+    <Setting Name="ClientSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">af843350c88f177b4a0aa062d300c3c15ca46b09</Value>
+    </Setting>
+    <Setting Name="UserName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AccessToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="RefreshToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AlbumURL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">https://api.imgur.com/3/album</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
