@@ -1,2 +1,2 @@
-# ImgurUploader
-Upload to Imgur from right-click context menu
+# Download
+Release: https://github.com/DBjelovuk/ImgurUploader/releases
