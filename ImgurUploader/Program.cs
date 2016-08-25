@@ -17,7 +17,6 @@ namespace ImgurUploader
 		static ProgressForm _f;
 		static Thread _uploadThread;
 		static List<string> SubmittedFiles = new List<string>();
-		static Mutex mutex = new Mutex(true, "{9A0E5077-1926-42CB-97A2-8DB89861E8B7}");
 
 		static void PipeListener()
 		{
@@ -50,8 +49,12 @@ namespace ImgurUploader
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
 				Application.Run(new AuthorizeForm());
+				return;
 			}
-			else if (mutex.WaitOne(TimeSpan.Zero, true)) {
+
+			Mutex mutex = new Mutex(true, "{9A0E5077-1926-42CB-97A2-8DB89861E8B7}");
+
+			if (mutex.WaitOne(TimeSpan.Zero, true)) {
 				// Server
 				SubmittedFiles.AddRange(args);
 				PipeListener();
