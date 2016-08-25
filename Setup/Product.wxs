@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="*" Name="Imgur Uploader" Language="1033" Version="1.0.0.0" Manufacturer="Drazen Bjelovuk" UpgradeCode="c64c1962-a191-4fd3-98ba-69454587466e">
+	<Product Id="*" Name="Imgur Uploader" Language="1033" Version="1.0.0" Manufacturer="Drazen Bjelovuk" UpgradeCode="c64c1962-a191-4fd3-98ba-69454587466e">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
 		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
