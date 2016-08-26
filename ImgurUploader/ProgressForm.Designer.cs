@@ -123,6 +123,7 @@
 			this.Controls.Add(this.fileListProgressBar);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
 			this.Name = "ProgressForm";
 			this.Text = "Imgur Upload Progress";
 			this.Load += new System.EventHandler(this.ProgressForm_Load);

@@ -128,6 +128,7 @@
 			this.Controls.Add(this.btnAuthorize);
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+			this.MaximizeBox = false;
 			this.Name = "AuthorizeForm";
 			this.Text = "Authorization";
 			this.Load += new System.EventHandler(this.AuthorizeForm_Load);
