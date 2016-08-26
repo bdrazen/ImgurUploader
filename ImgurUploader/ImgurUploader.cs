@@ -168,8 +168,9 @@ namespace ImgurUploader
 				}
 
 				if (albumResponse != null) {
-					if (accessToken == "")
-						Process.Start("http://imgur.com/a/" + albumResponse.data.deletehash);
+					// TODO: Figure out deletion for anynymous albums
+					//if (accessToken == "")
+					//	Process.Start("http://imgur.com/{???}" + albumResponse.data.deletehash);
 					Process.Start("http://imgur.com/a/" + albumResponse.data.id + "/layout/grid");
 				}
 
