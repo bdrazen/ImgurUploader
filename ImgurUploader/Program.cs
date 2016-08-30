@@ -7,6 +7,7 @@ using System.Drawing;
 using System.Configuration;
 using System.Threading;
 using System.IO.Pipes;
+using System.Diagnostics;
 
 namespace ImgurUploader
 {
@@ -48,7 +49,9 @@ namespace ImgurUploader
 			if (args.Length < 1) {
 				Application.EnableVisualStyles();
 				Application.SetCompatibleTextRenderingDefault(false);
-				Application.Run(new AuthorizeForm());
+				if (CheckForUpdate())
+					return;
+				Application.Run(new SettingsForm());
 				return;
 			}
 
@@ -60,6 +63,8 @@ namespace ImgurUploader
 				PipeListener();
 				Thread.Sleep(1000);
 				mutex.ReleaseMutex();
+				if (CheckForUpdate())
+					return;
 				InitializeUpload();
 			}
 			else {
@@ -76,6 +81,25 @@ namespace ImgurUploader
 			}
         }
 
+		static bool CheckForUpdate()
+		{
+			if (!Settings.Default.CheckUpdates)
+				return false;
+
+			string latestVersion = ImgurUploader.GetLatestRelease();
+			if (!string.IsNullOrEmpty(latestVersion) &&
+				"v" + Application.ProductVersion != latestVersion) {
+				DialogResult result = MessageBox.Show(
+					"There is an update available. Would you like to download now?",
+					"Update", MessageBoxButtons.YesNo);
+				if (result == DialogResult.Yes) {
+					Process.Start(Settings.Default.DownloadURL);
+					return true;
+				}
+			}
+			return false;
+		}
+
 		static void InitializeUpload()
 		{
 			Application.EnableVisualStyles();
@@ -83,7 +107,7 @@ namespace ImgurUploader
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
 			if (SubmittedFiles.Count < 1)
-				Application.Run(new AuthorizeForm());
+				Application.Run(new SettingsForm());
 			else {
 				List<string> validFileExtensions = new List<string> { "png", "jpg", "jpeg", "bmp", "gif" };
 				

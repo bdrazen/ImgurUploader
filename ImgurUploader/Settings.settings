@@ -11,6 +11,15 @@
     <Setting Name="TokenURL" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://api.imgur.com/oauth2/token</Value>
     </Setting>
+		<Setting Name="AlbumURL" Type="System.String" Scope="Application">
+			<Value Profile="(Default)">https://api.imgur.com/3/album</Value>
+		</Setting>
+		<Setting Name="UpdateURL" Type="System.String" Scope="Application">
+			<Value Profile="(Default)">https://api.github.com/repos/DBjelovuk/ImgurUploader/releases</Value>
+		</Setting>
+		<Setting Name="DownloadURL" Type="System.String" Scope="Application">
+			<Value Profile="(Default)">https://github.com/DBjelovuk/ImgurUploader/releases</Value>
+		</Setting>
     <Setting Name="ClientID" Type="System.String" Scope="Application">
       <Value Profile="(Default)">575caac0197cfa9</Value>
     </Setting>
@@ -26,8 +35,8 @@
     <Setting Name="RefreshToken" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="AlbumURL" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">https://api.imgur.com/3/album</Value>
+    <Setting Name="CheckUpdates" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -208,6 +208,11 @@ namespace ImgurUploader
 			public string token_type;
 			public string account_username;
 		}
+
+		class GithubRelease
+		{
+			public string tag_name;
+		}
 		#pragma warning restore 0649
 
 		void AttemptReauthorize(ImgurUploaderStatus status)
@@ -220,7 +225,7 @@ namespace ImgurUploader
 				catch (AuthorizationException aEx) {
 					MessageBox.Show("Could not authorize. Try re-authorizing your account.", "Error");
 					Application.Exit();
-					Application.Run(new AuthorizeForm());
+					Application.Run(new SettingsForm());
 					return;
 				}
 				this.UploadFiles();
@@ -228,8 +233,7 @@ namespace ImgurUploader
 
 		public static void Authorize(GrantType grantType, string key)
 		{
-			using (WebClient client = new WebClient())
-			{
+			using (WebClient client = new WebClient()) {
 				string typeParam = grantType == GrantType.Pin ? "pin" : "refresh_token";
 				string clientID = Settings.Default.ClientID;
 				string data = "client_id=" + clientID + "&" +
@@ -252,6 +256,20 @@ namespace ImgurUploader
 				settings.AccessToken = imgur.access_token;
 				settings.RefreshToken = imgur.refresh_token;
 				settings.Save();
+			}
+		}
+
+		public static string GetLatestRelease()
+		{
+			using (WebClient client = new WebClient()) {
+				try {
+					client.Headers["User-Agent"] = "ImgurUploader";
+					string response = client.DownloadString(Settings.Default.UpdateURL);
+					return JsonConvert.DeserializeObject<GithubRelease[]>(response)[0].tag_name;
+				}
+				catch (Exception ex) {
+					return "";
+				}
 			}
 		}
     }

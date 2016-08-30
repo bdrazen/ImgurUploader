@@ -52,6 +52,33 @@ namespace ImgurUploader {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.imgur.com/3/album")]
+        public string AlbumURL {
+            get {
+                return ((string)(this["AlbumURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://api.github.com/repos/DBjelovuk/ImgurUploader/releases")]
+        public string UpdateURL {
+            get {
+                return ((string)(this["UpdateURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("https://github.com/DBjelovuk/ImgurUploader/releases")]
+        public string DownloadURL {
+            get {
+                return ((string)(this["DownloadURL"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("575caac0197cfa9")]
         public string ClientID {
             get {
@@ -104,12 +131,15 @@ namespace ImgurUploader {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://api.imgur.com/3/album")]
-        public string AlbumURL {
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CheckUpdates {
             get {
-                return ((string)(this["AlbumURL"]));
+                return ((bool)(this["CheckUpdates"]));
+            }
+            set {
+                this["CheckUpdates"] = value;
             }
         }
     }

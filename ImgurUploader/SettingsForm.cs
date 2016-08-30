@@ -14,9 +14,9 @@ using System.Runtime.InteropServices;
 
 namespace ImgurUploader
 {
-	public partial class AuthorizeForm : Form
+	public partial class SettingsForm : Form
 	{
-		public AuthorizeForm()
+		public SettingsForm()
 		{
 			InitializeComponent();
 		}
@@ -24,6 +24,8 @@ namespace ImgurUploader
 		private void AuthorizeForm_Load(object sender, EventArgs e)
 		{
 			PopulateAccount();
+			if (!Settings.Default.CheckUpdates)
+				chkUpdates.Checked = false;
 		}
 
 		private void btnAuthorize_Click(object sender, EventArgs e)
@@ -42,7 +44,8 @@ namespace ImgurUploader
 			btnActivate.Enabled = false;
 			try {
 				ImgurUploader.Authorize(GrantType.Pin, txtPIN.Text.Trim());
-			} catch (AuthorizationException ex) {
+			}
+			catch (AuthorizationException ex) {
 				MessageBox.Show("Something went wrong, could not authorize");
 				btnActivate.Enabled = true;
 				return;
@@ -58,18 +61,27 @@ namespace ImgurUploader
 			settings.AccessToken = "";
 			settings.RefreshToken = "";
 			settings.Save();
-			pnlAccount.Visible = false;
+			txtAccount.Text = "";
+			btnRemove.Enabled = false;
 		}
 
 		void PopulateAccount()
 		{
 			Settings settings = Settings.Default;
-			if (settings.UserName != "")
-			{
+			if (settings.UserName != "") {
 				txtAccount.Text = settings.UserName;
-				pnlAccount.Visible = true;
+				btnRemove.Enabled = true;
 			}
 		}
 
+		private void chkUpdates_CheckedChanged(object sender, EventArgs e)
+		{
+			Settings settings = Settings.Default;
+			if (chkUpdates.Checked)
+				settings.CheckUpdates = true;
+			else
+				settings.CheckUpdates = false;
+			settings.Save();
+		}
 	}
 }
