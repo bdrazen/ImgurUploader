@@ -61,7 +61,7 @@ namespace ImgurUploader
 				// Server
 				SubmittedFiles.AddRange(args);
 				PipeListener();
-				Thread.Sleep(1000);
+				Thread.Sleep(500);
 				mutex.ReleaseMutex();
 				if (CheckForUpdate())
 					return;
