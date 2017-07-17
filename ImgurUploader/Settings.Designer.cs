@@ -142,5 +142,29 @@ namespace ImgurUploader {
                 this["CheckUpdates"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UploadAlbum {
+            get {
+                return ((bool)(this["UploadAlbum"]));
+            }
+            set {
+                this["UploadAlbum"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool DeleteWindow {
+            get {
+                return ((bool)(this["DeleteWindow"]));
+            }
+            set {
+                this["DeleteWindow"] = value;
+            }
+        }
     }
 }

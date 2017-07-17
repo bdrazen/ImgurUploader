@@ -24,8 +24,10 @@ namespace ImgurUploader
 		private void AuthorizeForm_Load(object sender, EventArgs e)
 		{
 			PopulateAccount();
-			if (!Settings.Default.CheckUpdates)
-				chkUpdates.Checked = false;
+            Settings settings = Settings.Default;
+            chkUpdates.Checked = settings.CheckUpdates;
+            chkAlbum.Checked = settings.UploadAlbum;
+            chkDltWndw.Checked = settings.DeleteWindow;
 		}
 
 		private void btnAuthorize_Click(object sender, EventArgs e)
@@ -46,7 +48,7 @@ namespace ImgurUploader
 				ImgurUploader.Authorize(GrantType.Pin, txtPIN.Text.Trim());
 			}
 			catch (AuthorizationException ex) {
-				MessageBox.Show("Something went wrong, could not authorize");
+				MessageBox.Show("Something went wrong, could not authorize", "Error");
 				btnActivate.Enabled = true;
 				return;
 			}
@@ -77,11 +79,22 @@ namespace ImgurUploader
 		private void chkUpdates_CheckedChanged(object sender, EventArgs e)
 		{
 			Settings settings = Settings.Default;
-			if (chkUpdates.Checked)
-				settings.CheckUpdates = true;
-			else
-				settings.CheckUpdates = false;
+            settings.CheckUpdates = chkUpdates.Checked;
 			settings.Save();
-		}
+        }
+
+        private void chkAlbum_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Default;
+            settings.UploadAlbum = chkAlbum.Checked;
+            settings.Save();
+        }
+
+        private void chkDltWndw_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings settings = Settings.Default;
+            settings.DeleteWindow = chkDltWndw.Checked;
+            settings.Save();
+        }
 	}
 }
