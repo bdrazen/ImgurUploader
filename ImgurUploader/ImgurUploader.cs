@@ -28,7 +28,7 @@ namespace ImgurUploader
 			HttpWebRequest hr;
 
 			try {
-				if (Files.Count > 1) {
+				if (Files.Count > 1 && Settings.Default.UploadAlbum) {
 					// Create album
 					status = new ImgurUploaderStatus { FileProcessMessage = "Creating album..." };
 					UpdateStatus(this, status);
@@ -55,9 +55,11 @@ namespace ImgurUploader
 				}
 
 				int currentFileNumber = 0;
+                List<UploadResponse> responses = new List<UploadResponse>();
+
 				foreach (string file in Files) {
 					currentFileNumber++;
-					string TotalMessage = String.Format("Dealing with file {0}/{1}", currentFileNumber, Files.Count);
+					string TotalMessage = String.Format("Handling file {0}/{1}", currentFileNumber, Files.Count);
 					double TotalProgress = (currentFileNumber - 1) / (Files.Count * 1.0f);
 					status =
 						new ImgurUploaderStatus {
@@ -91,13 +93,13 @@ namespace ImgurUploader
 					byte[] boundBytes = Encoding.ASCII.GetBytes("\r\n--" + bound + "\r\n");
 
 					string headerTemplate =
-							"Content-Disposition: form-data; name=\"{0}\"; filename=\"{1}\"\r\n Content-Type: application/octet-stream\r\n\r\n";
+							"Content-Disposition: form-data; name=\"image\"; filename=\"{0}\"\r\n Content-Type: application/octet-stream\r\n\r\n";
 
 					byte[] headerBytes = Encoding.UTF8.GetBytes(
-							String.Format(headerTemplate, "image", file));
+							String.Format(headerTemplate, Path.GetFileName(file)));
 
 					using (FileStream fs = new FileStream(file, FileMode.Open, FileAccess.Read)) {
-						//calculate the total length we expect to send
+						// Calculate the total length we expect to send
 						long contentLength = 0;
 						contentLength += headerBytes.Length;
 						contentLength += fs.Length;
@@ -121,7 +123,7 @@ namespace ImgurUploader
 							}
 
 
-							//write the files to the request stream
+							// Write the file to the request stream
 							status.FileProcessMessage = "Sending File...";
 							UpdateStatus(this, status);
 							s.Write(headerBytes, 0, headerBytes.Length);
@@ -153,11 +155,8 @@ namespace ImgurUploader
 							Application.Exit();
 							return;
 						}
-						else if (albumResponse == null) {
-							if (accessToken == "")
-								Process.Start("http://imgur.com/delete/" + imgur.data.deletehash);
-							Process.Start(imgur.data.link);
-						}
+						else if (albumResponse == null)
+                            responses.Add(imgur);
 					}
 
 					status.FileProcessMessage = "All finished, what's next?";
@@ -167,8 +166,15 @@ namespace ImgurUploader
 					hr = null;
 				}
 
-				if (albumResponse != null) {
-					// TODO: Figure out deletion for anynymous albums
+                if (albumResponse == null) {
+                    foreach (UploadResponse imgur in responses) {
+					    if (accessToken == "" && Settings.Default.DeleteWindow)
+						    Process.Start("http://imgur.com/delete/" + imgur.data.deletehash);
+					    Process.Start(imgur.data.link);
+                    }
+                }
+				else {
+					// TODO: Figure out deletion for anonymous albums
 					//if (accessToken == "")
 					//	Process.Start("http://imgur.com/{???}" + albumResponse.data.deletehash);
 					Process.Start("http://imgur.com/a/" + albumResponse.data.id + "/layout/grid");
@@ -187,7 +193,7 @@ namespace ImgurUploader
 			}
         }
 
-        #pragma warning disable 0649 // Fields assigned to by JSON deserialization
+        #pragma warning disable 0649 // Fields assigned by JSON deserialization
         class UploadResponse
         {
             public bool success;

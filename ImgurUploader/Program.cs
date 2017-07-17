@@ -91,7 +91,7 @@ namespace ImgurUploader
 				"v" + Application.ProductVersion != latestVersion) {
 				DialogResult result = MessageBox.Show(
 					"There is an update available. Would you like to download now?",
-					"Update", MessageBoxButtons.YesNo);
+					"Imgur Uploader", MessageBoxButtons.YesNo);
 				if (result == DialogResult.Yes) {
 					Process.Start(Settings.Default.DownloadURL);
 					return true;
@@ -106,31 +106,27 @@ namespace ImgurUploader
 			Application.SetCompatibleTextRenderingDefault(false);
 			Application.ApplicationExit += new EventHandler(Application_ApplicationExit);
 
-			if (SubmittedFiles.Count < 1)
-				Application.Run(new SettingsForm());
-			else {
-				List<string> validFileExtensions = new List<string> { "png", "jpg", "jpeg", "bmp", "gif" };
+			List<string> validFileExtensions = new List<string> { "png", "jpg", "jpeg", "bmp", "gif" };
 				
-				List<string> validFiles = SubmittedFiles.Where((f) => File.Exists(f) && 
-															   validFileExtensions.Contains(
-															   Path.GetExtension(f).ToLower().Remove(0, 1))).ToList();
-				if (validFiles.Count < 1) {
-					MessageBox.Show(Message_NoValidFiles);
-					return;
-				}
-
-				//make progress form
-				ImgurUploader i = new ImgurUploader { Files = validFiles };
-
-				i.UpdateStatus += new ImgurUploader.UploadStatusHandler(i_UpdateStatus);
-
-				_f = new ProgressForm();
-
-				_uploadThread = new Thread(i.UploadFiles);
-				_uploadThread.Start();
-
-				Application.Run(_f);
+			List<string> validFiles = SubmittedFiles.Where((f) => File.Exists(f) && 
+															validFileExtensions.Contains(
+															Path.GetExtension(f).ToLower().Remove(0, 1))).ToList();
+			if (validFiles.Count < 1) {
+				MessageBox.Show(Message_NoValidFiles);
+				return;
 			}
+
+			//make progress form
+			ImgurUploader i = new ImgurUploader { Files = validFiles };
+
+			i.UpdateStatus += new ImgurUploader.UploadStatusHandler(i_UpdateStatus);
+
+			_f = new ProgressForm();
+
+			_uploadThread = new Thread(i.UploadFiles);
+			_uploadThread.Start();
+
+			Application.Run(_f);
 		}
 
         static void Application_ApplicationExit(object sender, EventArgs e)
